@@ -87,14 +87,64 @@ This improves maintainability by separating sensor logic from reading logic.
 5. Logging filter records final response code
 6. Client receives JSON response
 
+**Steps taken to complete the project**
+1. Setting up Apache Tomcat server
+   * Download the Apache Tomcat server provided in the BlackBoard
+   * On netbeans: service tab -> Server -> Add Server -> Apache Tomcat or TomEE -> next -> browse -> open the downloaded file
+   * In the Service tab select the Tomcat server
+2. Project Setup
+   * File -> New Project -> Java with Maven -> Web Application
+   * Name the project
+   * Select Apache Tomcat as the server
+   * Add the following dependencies to the pom.xml file
+   <dependencies>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.32</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>2.32</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>2.32</version>
+        </dependency>
 
-**How to Run**
-
-```bash
-git clone <repo-url>
-cd testCW
-mvn clean install
-```
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.32</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet-core</artifactId>
+            <version>2.32</version>
+        </dependency>
+    </dependencies>
+    * The project package structure 
+     - com.mycompany.testcw.model       (POJOs)
+     - com.mycompany.testcw.storage     (DataStore)
+     - com.mycompany.testcw.resource    (API endpoints)
+     - com.mycompany.testcw.service     (Business logic)
+     - com.mycompany.testcw.exception   (Custom exceptions)
+     - com.mycompany.testcw.mapper      (Exception mappers)
+     - com.mycompany.testcw.filter      (Logging filter)
+   
+    * Create an Application class to define the base URI path for all the REST resources within the application.
+    * Create a DataStore class for the in-memory data store
+    * Create resource models for Rooms, Sensors and Readings
+    * Create the four resources for the API endpoints and service files with the business logic
+    * For error handling, create a ErrorMessage model, exceptions classes and mapper classes for each custom exception and implement logging filters
+    * Update the resources to trigger the exception
+  3. Build the project
+   * Right click project -> Clean and Build
+   * Right click project -> Run or click the green play button
 
 **cURL Commands**
 1. Create a new room - POST /rooms
@@ -112,12 +162,7 @@ curl --location 'http://localhost:8080/testCW/api/v1/rooms' \
    
 curl --location --request DELETE 'http://localhost:8080/testCW/api/v1/rooms/R5' \
 --header 'Accept: application/json' \
---header 'Content-Type: application/json' \
---data '{
-        "id": "R5",
-        "name": "Library Quiet Study",
-        "capacity": 30
-    }'
+--header 'Content-Type: application/json'
 
 3. Create a new sensor - POST /sensors
 
@@ -143,7 +188,7 @@ curl --location 'http://localhost:8080/testCW/api/v1/sensors/TEMP-005/readings' 
     "value": 24.5
 }'
 
-5. Retreive the type of sensor - GET /sensors?type=Temperature
+5. Retrieve the type of sensor - GET /sensors?type=Temperature
 
 curl --location --request GET 'http://localhost:8080/testCW/api/v1/sensors?type=Temperature' \
 --header 'Accept: application/json' \
