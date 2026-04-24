@@ -18,6 +18,7 @@ import java.util.List;
 public class SensorResource {
     SensorService sensorService = new SensorService();
     
+    // Create new sensor
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response newSensor(Sensor sensor){
@@ -29,6 +30,7 @@ public class SensorResource {
         return Response.status(201).entity(sensorNew).build();
     }
     
+    // Filter using the sensor type
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response fileterSensor(@QueryParam("type") String type){
@@ -39,6 +41,7 @@ public class SensorResource {
         return Response.ok(sensorService.getAllSensors()).build();
     }
     
+    // Nested path for readings of the sensor
     @Path("{sensorId}/readings")
     public SensorReadingResource getReading(@PathParam("sensorId") String id){
         return new SensorReadingResource(id);

@@ -1,6 +1,5 @@
 package com.mycompany.testcw.resource;
 
-import com.mycompany.testcw.exception.RoomNotEmptyException;
 import com.mycompany.testcw.service.RoomService;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -19,12 +18,14 @@ public class RoomResource {
     
     RoomService roomService = new RoomService();
     
+    // GET all rooms
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Room> getRooms(){
         return roomService.getAllRooms();
     }
     
+    // GET room by id
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
@@ -32,6 +33,7 @@ public class RoomResource {
         return roomService.getRoomById(id);
     }
     
+    // Create a new room
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addRoom(Room room){
@@ -39,6 +41,7 @@ public class RoomResource {
         return Response.status(201).entity(room).build();
     }
     
+    // Delete a room
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")

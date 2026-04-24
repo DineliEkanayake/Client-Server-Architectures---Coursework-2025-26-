@@ -20,6 +20,7 @@ public class SensorReadingResource {
         this.sensorId = id;
     }
     
+    // GET the history readings of the sensor
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getHistory(){
@@ -27,6 +28,7 @@ public class SensorReadingResource {
         return Response.ok(history).build();
     }
     
+    // Create new readings
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addReading(SensorReading reading){
